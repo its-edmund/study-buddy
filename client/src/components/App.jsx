@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, Stack, Text, Box, Header, SimpleGrid } from "@chakra-ui/react";
+import { Button, SimpleGrid } from "@chakra-ui/react";
 
 import Card from "./Card";
 
