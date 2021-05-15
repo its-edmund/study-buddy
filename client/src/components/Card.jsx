@@ -3,7 +3,7 @@ import { Box, Text, Heading, IconButton } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
 
-const Card = ({ question, answer }) => {
+const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
 
   const cardClick = () => {
@@ -26,6 +26,7 @@ const Card = ({ question, answer }) => {
           icon={<CloseIcon />}
           onClick={(e) => {
             e.stopPropagation();
+            removeCard(id);
           }}
           color="white"
           position="absolute"
@@ -36,6 +37,9 @@ const Card = ({ question, answer }) => {
         />
         <IconButton
           icon={<EditIcon />}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           color="white"
           variant="ghost"
           position="absolute"

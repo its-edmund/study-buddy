@@ -17,8 +17,17 @@ const Home = () => {
       setCards(res.data);
     };
     getData();
+    setCards([{ question: "What is the square root of 16", answer: "4", _id: "69" }, { question: "When was the Declaration of Independence drafted?", answer: "1776", _id: '420' }])
     console.log(cards);
   }, []);
+
+  const removeCard = (_id) => {
+    const newCards = cards.filter((card) => {
+      return card._id !== _id;
+    })
+    console.log(newCards);
+    setCards(newCards);
+  }
 
   return (
     <>
@@ -34,8 +43,8 @@ const Home = () => {
       </Heading>
       <Link to="/new">
         <Button
-          height="75px"
-          width="75px"
+          height="60px"
+          width="60px"
           borderRadius="50%"
           position="fixed"
           color="white"
@@ -49,7 +58,7 @@ const Home = () => {
       </Link>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         {cards.map((e) => {
-          return <Card question={e.question} answer={e.answer} />;
+          return <Card key={e._id} id={e._id} question={e.question} answer={e.answer} removeCard={removeCard} />;
         })}
       </SimpleGrid>
     </>

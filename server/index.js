@@ -26,12 +26,19 @@ app.get("/allcards", (req, res) => {
 });
 
 app.post("/add", (req, res) => {
-  console.log("route worked");
+  console.log("added");
   const newCard = new Card({
     question: req.query.question,
     answer: req.query.answer,
   });
   newCard.save(function (err, fluffy) {
+    if (err) return console.error(err);
+  });
+  res.send();
+});
+
+app.delete("/delete", (req, res) => {
+  Card.deleteOne({ _id: req.query.id }, function (err) {
     if (err) return console.error(err);
   });
   res.send();
