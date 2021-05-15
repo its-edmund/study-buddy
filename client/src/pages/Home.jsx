@@ -2,15 +2,23 @@ import React, { useState, useEffect } from "react";
 import { Button, SimpleGrid, Heading } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 import Card from "../components/Card";
+
+const URL = "http://localhost:5000";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
 
   useEffect(() => {
-    setCards([{ question: "ooga" }, { question: "ooga 2" }]);
-  }, [cards]);
+    const getData = async () => {
+      let res = await axios.get(`${URL}/allcards`);
+      setCards(res.data);
+    };
+    getData();
+    console.log(cards);
+  }, []);
 
   return (
     <>
@@ -31,7 +39,7 @@ const Home = () => {
           borderRadius="50%"
           position="fixed"
           color="white"
-          backgroundColor="#7928CA"
+          bgGradient="linear(to-l, #9831ff,#62bdff)"
           _hover={{ bg: "purple.300" }}
           bottom="30px"
           right="30px"
@@ -41,7 +49,7 @@ const Home = () => {
       </Link>
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         {cards.map((e) => {
-          return <Card question={e.question} answer="answer 1" />;
+          return <Card question={e.question} answer={e.answer} />;
         })}
       </SimpleGrid>
     </>

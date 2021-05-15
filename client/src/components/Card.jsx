@@ -13,17 +13,20 @@ const Card = ({ question, answer }) => {
   return (
     <ReactCardFlip isFlipped={showAnswer}>
       <Box
-        backgroundColor="pink.300"
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
         borderRadius="10px"
         textAlign="center"
         mx="auto"
         my="10px"
+        bgGradient="linear(to-l, #9831ff,#fa31b7)"
         onClick={cardClick}
       >
         <IconButton
           icon={<CloseIcon />}
+          onClick={(e) => {
+            e.stopPropagation();
+          }}
           color="white"
           position="absolute"
           variant="ghost"
@@ -48,7 +51,7 @@ const Card = ({ question, answer }) => {
         </Box>
       </Box>
       <Box
-        backgroundColor="pink.500"
+        bgGradient="linear(to-l, #9831ff,#fa31b7)"
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
         borderRadius="10px"
