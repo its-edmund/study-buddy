@@ -41,7 +41,6 @@ app.get("/allcards", (req, res) => {
 });
 
 app.post("/add", (req, res) => {
-  console.log(req.body);
   const newCard = new Card({
     question: req.body.question,
     answer: req.body.answer,
@@ -53,7 +52,7 @@ app.post("/add", (req, res) => {
 });
 
 app.delete("/delete", (req, res) => {
-  Card.deleteOne({ _id: req.query.id }, function (err) {
+  Card.deleteOne({ _id: req.body.id }, function (err) {
     if (err) return console.error(err);
   });
   res.send();

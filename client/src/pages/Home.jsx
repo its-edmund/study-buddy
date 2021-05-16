@@ -19,10 +19,11 @@ const Home = () => {
     getData();
   }, []);
 
-  const removeCard = (_id) => {
+  const removeCard = async (_id) => {
     const newCards = cards.filter((card) => {
       return card._id !== _id;
     })
+    await axios.delete(`${URL}/delete`, { data: { id: _id } })
     console.log(newCards);
     setCards(newCards);
   }
