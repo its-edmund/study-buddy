@@ -41,7 +41,7 @@ const Home = () => {
         fontSize="6xl"
         fontWeight="extrabold"
       >
-        Study Buddy
+        Study Buddy ✎
       </Heading>
       <Link to="/new">
         <Button
