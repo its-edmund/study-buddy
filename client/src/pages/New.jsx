@@ -8,13 +8,16 @@ import {
   FormErrorMessage,
   Button,
   Heading,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
-import { ArrowBackIcon } from '@chakra-ui/icons'
+import { ArrowBackIcon } from "@chakra-ui/icons";
 import axios from "axios";
 import { Formik, Form } from "formik";
 
-const URL = "http://localhost:5000";
+const URL =
+  process.env.NODE_ENV === "production"
+    ? "https://quizlet-clone-backend.herokuapp.com"
+    : "http://localhost:5000";
 
 const New = () => {
   const history = useHistory();
@@ -52,7 +55,7 @@ const New = () => {
             status: "success",
             duration: 2000,
             isClosable: true,
-          })
+          });
         }}
       >
         {({ handleChange }) => (
@@ -66,7 +69,19 @@ const New = () => {
             borderRadius="20px"
             bgColor="white"
           >
-            <Button onClick={() => {history.push("/")}} variant='ghost' p={0} mb='20px' _hover='none' _active='none'><ArrowBackIcon />Return</Button>
+            <Button
+              onClick={() => {
+                history.push("/");
+              }}
+              variant="ghost"
+              p={0}
+              mb="20px"
+              _hover="none"
+              _active="none"
+            >
+              <ArrowBackIcon />
+              Return
+            </Button>
             <Form>
               <FormControl>
                 <FormLabel htmlFor="question">Question</FormLabel>
