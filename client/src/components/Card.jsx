@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form } from "formik";
 import axios from "axios";
 
 const URL =
@@ -46,7 +46,8 @@ const Card = ({ question, answer, id, removeCard }) => {
       bgGradient="linear(to-l, #9831ff,#fa31b7)"
     >
       <Formik
-        initialValues={{ question: "hello", answer: answerState }}
+        initialValues={{ question: questionState, answer: answerState }}
+        enableReinitialize
         onSubmit={async (values, actions) => {
           await axios.put(`${URL}/update`, {
             question: values.question,
@@ -58,25 +59,20 @@ const Card = ({ question, answer, id, removeCard }) => {
           setQuestionState(values.question);
         }}
       >
-        {({ handleChange, setFieldValue }) => (
+        {({ handleChange, setFieldValue, values }) => (
           <Box width="80%" mx="auto" my="20px">
             <Form>
               <FormControl>
                 <FormLabel color="white" htmlFor="question">
                   Question
                 </FormLabel>
-                <Field name="question">
-                  {({ field, form }) => {
-                    return (
-                      <Input
-                        id="question"
-                        background="white"
-                        onChange={handleChange}
-                        placeholder="Question"
-                      />
-                    );
-                  }}
-                </Field>
+                <Input
+                  id="question"
+                  background="white"
+                  onChange={handleChange}
+                  placeholder="Question"
+                  value={values.question}
+                />
                 <FormErrorMessage>Error :(</FormErrorMessage>
               </FormControl>
               <FormControl py="10px">
@@ -88,6 +84,7 @@ const Card = ({ question, answer, id, removeCard }) => {
                   name="answer"
                   onChange={handleChange}
                   placeholder="Answer"
+                  value={values.answer}
                 />
                 <FormErrorMessage>Error :(</FormErrorMessage>
               </FormControl>
