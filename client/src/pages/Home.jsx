@@ -6,7 +6,10 @@ import axios from "axios";
 
 import Card from "../components/Card";
 
-const URL = "http://localhost:5000";
+const URL =
+  process.env.NODE_ENV === "production"
+    ? "https://quizlet-clone-backend.herokuapp.com/"
+    : "http://localhost:5000";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
@@ -22,11 +25,11 @@ const Home = () => {
   const removeCard = async (_id) => {
     const newCards = cards.filter((card) => {
       return card._id !== _id;
-    })
-    await axios.delete(`${URL}/delete`, { data: { id: _id } })
+    });
+    await axios.delete(`${URL}/delete`, { data: { id: _id } });
     console.log(newCards);
     setCards(newCards);
-  }
+  };
 
   return (
     <>
@@ -56,20 +59,30 @@ const Home = () => {
           <AddIcon />
         </Button>
       </Link>
-      {
-    cards.length <= 0 ? 
-      <Heading textAlign="center"
-        my="70px"
-        fontSize="3xl"
-        fontWeight="extrabold"
-      >
+      {cards.length <= 0 ? (
+        <Heading
+          textAlign="center"
+          my="70px"
+          fontSize="3xl"
+          fontWeight="extrabold"
+        >
           You haven't added any cards yet!
-          </Heading> :
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-        {cards.map((e) => {
-          return <Card key={e._id} id={e._id} question={e.question} answer={e.answer} removeCard={removeCard} />;
-        })}
-      </SimpleGrid>}
+        </Heading>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+          {cards.map((e) => {
+            return (
+              <Card
+                key={e._id}
+                id={e._id}
+                question={e.question}
+                answer={e.answer}
+                removeCard={removeCard}
+              />
+            );
+          })}
+        </SimpleGrid>
+      )}
     </>
   );
 };

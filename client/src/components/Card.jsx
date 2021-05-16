@@ -16,7 +16,9 @@ import { Formik, Form, Field } from "formik";
 import axios from "axios";
 
 const URL =
-  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
+  process.env.NODE_ENV === "production"
+    ? "https://quizlet-clone-backend.herokuapp.com/"
+    : "http://localhost:5000";
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
