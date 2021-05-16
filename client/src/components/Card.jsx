@@ -1,11 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Box, Text, Heading, IconButton, Button, FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/react";
+import {
+  Box,
+  Text,
+  Heading,
+  IconButton,
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  FormErrorMessage,
+} from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
-import { Formik, Form, Field } from 'formik'
-import axios from 'axios'
+import { Formik, Form, Field } from "formik";
+import axios from "axios";
 
-const URL = process.env.NODE_ENV === 'production' ? "" : 'http://localhost:5000'
+const URL =
+  process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -16,90 +27,99 @@ const Card = ({ question, answer, id, removeCard }) => {
   useEffect(() => {
     setAnswerState(answer);
     setQuestionState(question);
-  }, [answer, question])
+  }, [answer, question]);
 
   const cardClick = () => {
     setShowAnswer(!showAnswer);
   };
 
-  return (
-    editing ? (
-      <Box
-        width={{ base: "80vw", md: "30vw" }}
-        height="300px"
-        borderRadius="10px"
-        textAlign="center"
-        mx="auto"
-        my="10px"
-        bgGradient="linear(to-l, #9831ff,#fa31b7)"
+  return editing ? (
+    <Box
+      width={{ base: "80vw", md: "30vw" }}
+      height="300px"
+      borderRadius="10px"
+      textAlign="center"
+      mx="auto"
+      my="10px"
+      bgGradient="linear(to-l, #9831ff,#fa31b7)"
+    >
+      <Formik
+        initialValues={{ question: "hello", answer: answerState }}
+        onSubmit={async (values, actions) => {
+          await axios.put(`${URL}/update`, {
+            question: values.question,
+            answer: values.answer,
+            id: id,
+          });
+          setEditing(false);
+          setAnswerState(values.answer);
+          setQuestionState(values.question);
+        }}
       >
-        <Formik
-          initialValues={{ question: "hello", answer: answerState }}
-          onSubmit={async (values, actions) => {
-            await axios.put(`${URL}/update`, {question: values.question, answer: values.answer, id});
-            setEditing(false);
-            setAnswerState(values.answer);
-            setQuestionState(values.question);
-          }}
-        >
-          {({ handleChange, setFieldValue }) => (
-            <Box width='80%' mx='auto' my='20px'>
-              <Form>
-                <FormControl>
-                  <FormLabel color='white' htmlFor="question">Question</FormLabel>
-                  <Field name='question'>
-                    {({field, form}) => {
-                      return <Input
-                        id='question'
-                        background='white'
+        {({ handleChange, setFieldValue }) => (
+          <Box width="80%" mx="auto" my="20px">
+            <Form>
+              <FormControl>
+                <FormLabel color="white" htmlFor="question">
+                  Question
+                </FormLabel>
+                <Field name="question">
+                  {({ field, form }) => {
+                    return (
+                      <Input
+                        id="question"
+                        background="white"
                         onChange={handleChange}
                         placeholder="Question"
                       />
-                    }}
-                  </Field>
-                  <FormErrorMessage>Error :(</FormErrorMessage>
-                </FormControl>
-                <FormControl py="10px">
-                  <FormLabel color='white' htmlFor="answer">Answer</FormLabel>
-                  <Input
-                    background='white'
-                    name="answer"
-                    onChange={handleChange}
-                    placeholder="Answer"
-                  />
-                  <FormErrorMessage>Error :(</FormErrorMessage>
-                </FormControl>
-                <Button
-                  mt={4}
-                  onClick={() => {
-                    setEditing(false);
+                    );
                   }}
-                  color="white"
-                  variant='ghost'
-                  position='relative'
-                  right='5vw'
-                  _hover='none'
-                  _active='none'
-                >
-                  Cancel
-                </Button>
-                <Button
-                  mt={4}
-                  type="submit"
-                  bgGradient="linear(to-l, #9831ff,#62bdff)"
-                  color="white"
-                  position='relative'
-                  left='5vw'
-                >
-                  Edit
-                </Button>
-              </Form>
-            </Box>
-          )}
-        </Formik>
-      </Box>
-    )
-      : <ReactCardFlip isFlipped={showAnswer}>
+                </Field>
+                <FormErrorMessage>Error :(</FormErrorMessage>
+              </FormControl>
+              <FormControl py="10px">
+                <FormLabel color="white" htmlFor="answer">
+                  Answer
+                </FormLabel>
+                <Input
+                  background="white"
+                  name="answer"
+                  onChange={handleChange}
+                  placeholder="Answer"
+                />
+                <FormErrorMessage>Error :(</FormErrorMessage>
+              </FormControl>
+              <Button
+                mt={4}
+                onClick={() => {
+                  setEditing(false);
+                }}
+                color="white"
+                variant="ghost"
+                position="relative"
+                right="5vw"
+                _hover="none"
+                _active="none"
+              >
+                Cancel
+              </Button>
+              <Button
+                mt={4}
+                type="submit"
+                bgGradient="linear(to-l, #9831ff,#62bdff)"
+                color="white"
+                position="relative"
+                left="5vw"
+              >
+                Edit
+              </Button>
+            </Form>
+          </Box>
+        )}
+      </Formik>
+    </Box>
+  ) : (
+    <ReactCardFlip isFlipped={showAnswer}>
       <Box
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
@@ -127,7 +147,7 @@ const Card = ({ question, answer, id, removeCard }) => {
           icon={<EditIcon />}
           onClick={(e) => {
             e.stopPropagation();
-            setEditing(true)
+            setEditing(true);
           }}
           color="white"
           variant="ghost"
