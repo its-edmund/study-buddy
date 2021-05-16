@@ -47,6 +47,7 @@ app.get("/allcards", (req, res) => {
 });
 
 app.post("/add", (req, res) => {
+  console.log(req.body.question);
   const newCard = new Card({
     question: req.body.question,
     answer: req.body.answer,
