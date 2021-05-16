@@ -8,6 +8,7 @@ import {
   FormErrorMessage,
   Button,
   Heading,
+  useToast
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from '@chakra-ui/icons'
 import axios from "axios";
@@ -17,6 +18,7 @@ const URL = "http://localhost:5000";
 
 const New = () => {
   const history = useHistory();
+  const toast = useToast();
 
   return (
     <Box
@@ -45,6 +47,12 @@ const New = () => {
           console.log(res);
           actions.setSubmitting(false);
           history.push("/");
+          toast({
+            title: "New Card Created!",
+            status: "success",
+            duration: 2000,
+            isClosable: true,
+          })
         }}
       >
         {({ handleChange }) => (

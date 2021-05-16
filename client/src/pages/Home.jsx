@@ -56,11 +56,20 @@ const Home = () => {
           <AddIcon />
         </Button>
       </Link>
+      {
+    cards.length <= 0 ? 
+      <Heading textAlign="center"
+        my="70px"
+        fontSize="3xl"
+        fontWeight="extrabold"
+      >
+          You haven't added any cards yet!
+          </Heading> :
       <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
         {cards.map((e) => {
           return <Card key={e._id} id={e._id} question={e.question} answer={e.answer} removeCard={removeCard} />;
         })}
-      </SimpleGrid>
+      </SimpleGrid>}
     </>
   );
 };
