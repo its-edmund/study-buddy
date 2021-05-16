@@ -17,8 +17,6 @@ const Home = () => {
       setCards(res.data);
     };
     getData();
-    setCards([{ question: "What is the square root of 16", answer: "4", _id: "69" }, { question: "When was the Declaration of Independence drafted?", answer: "1776", _id: '420' }])
-    console.log(cards);
   }, []);
 
   const removeCard = (_id) => {
@@ -52,6 +50,7 @@ const Home = () => {
           _hover={{ bg: "purple.300" }}
           bottom="30px"
           right="30px"
+          zIndex={100}
         >
           <AddIcon />
         </Button>

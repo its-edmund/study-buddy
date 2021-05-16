@@ -41,8 +41,6 @@ const New = () => {
           const res = await axios.post(`${URL}/add`, {
             question: values.question,
             answer: values.answer,
-          }, {
-
           });
           console.log(res);
           actions.setSubmitting(false);

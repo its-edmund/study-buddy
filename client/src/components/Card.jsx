@@ -2,16 +2,42 @@ import React, { useState } from "react";
 import { Box, Text, Heading, IconButton } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
+import { Formik } from 'formik'
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   const cardClick = () => {
     setShowAnswer(!showAnswer);
   };
 
   return (
-    <ReactCardFlip isFlipped={showAnswer}>
+    editing ? (
+      <Box
+        width={{ base: "80vw", md: "30vw" }}
+        height="300px"
+        borderRadius="10px"
+        textAlign="center"
+        mx="auto"
+        my="10px"
+        bgGradient="linear(to-l, #9831ff,#fa31b7)"
+      >
+        <IconButton
+          icon={<CloseIcon />}
+          onClick={(e) => {
+            e.stopPropagation();
+            removeCard(id);
+          }}
+          color="white"
+          position="absolute"
+          variant="ghost"
+          top="15px"
+          right="30px"
+          _hover="none"
+        />
+      </Box> )
+      : <ReactCardFlip isFlipped={showAnswer}>
       <Box
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
