@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Text, Heading, IconButton, Button, FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
 import { Formik, Form } from 'formik'
+import axios from 'axios'
+
+const URL = 'http://localhost:5000'
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
   const [editing, setEditing] = useState(false);
+  const [questionState, setQuestionState] = useState("");
+  const [answerState, setAnswerState] = useState("");
+
+  useEffect(() => {
+    setAnswerState(answer);
+    setQuestionState(question);
+  }, [])
 
   const cardClick = () => {
     setShowAnswer(!showAnswer);
@@ -23,26 +33,16 @@ const Card = ({ question, answer, id, removeCard }) => {
         my="10px"
         bgGradient="linear(to-l, #9831ff,#fa31b7)"
       >
-        <IconButton
-          icon={<CloseIcon />}
-          onClick={(e) => {
-            e.stopPropagation();
-            removeCard(id);
-          }}
-          color="white"
-          position="absolute"
-          variant="ghost"
-          top="15px"
-          right="30px"
-          _hover="none"
-        />
         <Formik
-          initialValues={{ question: question, answer: answer }}
+          initialValues={{ question: "hello", answer: answerState }}
           onSubmit={async (values, actions) => {
-            console.log(values)
+            const res = await axios.put(`${URL}/update`, {question: values.question, answer: values.answer, id});
+            setEditing(false);
+            setAnswerState(values.answer);
+            setQuestionState(values.question);
           }}
         >
-          {({ handleChange }) => (
+          {({ handleChange, setFieldValue }) => (
             <Box width='80%' mx='auto' my='20px'>
               <Form>
                 <FormControl>
@@ -136,7 +136,7 @@ const Card = ({ question, answer, id, removeCard }) => {
           <Heading color="white" fontSize="24px" fontWeight="bold">
             Question
           </Heading>
-          <Text color="white">{question}</Text>
+          <Text color="white">{questionState}</Text>
         </Box>
       </Box>
       <Box
@@ -153,7 +153,7 @@ const Card = ({ question, answer, id, removeCard }) => {
           <Heading fontSize="24px" color="white" fontWeight="bold">
             Answer
           </Heading>
-          <Text color="white">{answer}</Text>
+          <Text color="white">{answerState}</Text>
         </Box>
       </Box>
     </ReactCardFlip>

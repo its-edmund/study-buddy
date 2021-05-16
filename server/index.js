@@ -58,6 +58,17 @@ app.delete("/delete", (req, res) => {
   res.send();
 });
 
+app.put("/update", (req, res) => {
+  console.log(req.body.id);
+  Card.update({_id: req.body.id}, {
+      question: req.body.question, 
+      answer: req.body.answer, 
+  }, function(err, numberAffected, rawResponse) {
+    console.error(err);
+  })
+  res.send();
+})
+
 app.listen(PORT, () => {
   console.log("Listening on PORT", PORT);
 });
