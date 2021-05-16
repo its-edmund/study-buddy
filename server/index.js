@@ -1,25 +1,31 @@
 const express = require("express");
-let cors = require('cors');
-const bodyParser = require('body-parser');
+let cors = require("cors");
+const bodyParser = require("body-parser");
 const app = express();
 app.use(cors());
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const { createProxyMiddleware } = require('http-proxy-middleware');
+const { createProxyMiddleware } = require("http-proxy-middleware");
 
 dotenv.config();
 
-app.use('/api', createProxyMiddleware({ 
-    target: 'http://localhost:5000/', //original url
-    changeOrigin: true, 
+app.use(
+  "/api",
+  createProxyMiddleware({
+    target:
+      process.env.NODE_ENV === "production"
+        ? "https://quizlet-clone-backend.herokuapp.com/"
+        : "http://localhost:5000/", //original url
+    changeOrigin: true,
     //secure: false,
     onProxyRes: function (proxyRes, req, res) {
-       proxyRes.headers['Access-Control-Allow-Origin'] = '*';
-    }
-}));
+      proxyRes.headers["Access-Control-Allow-Origin"] = "*";
+    },
+  })
+);
 
-app.use(express.json())
+app.use(express.json());
 
 mongoose.connect(
   `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cards.ahocn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
@@ -60,14 +66,18 @@ app.delete("/delete", (req, res) => {
 
 app.put("/update", (req, res) => {
   console.log(req.body.id);
-  Card.update({_id: req.body.id}, {
-      question: req.body.question, 
-      answer: req.body.answer, 
-  }, function(err, numberAffected, rawResponse) {
-    console.error(err);
-  })
+  Card.update(
+    { _id: req.body.id },
+    {
+      question: req.body.question,
+      answer: req.body.answer,
+    },
+    function (err, numberAffected, rawResponse) {
+      console.error(err);
+    }
+  );
   res.send();
-})
+});
 
 app.listen(PORT, () => {
   console.log("Listening on PORT", PORT);
