@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Box, Text, Heading, IconButton, Button, FormControl, FormLabel, Input, FormErrorMessage } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
-import { Formik, Form } from 'formik'
+import { Formik, Form, Field } from 'formik'
 import axios from 'axios'
 
-const URL = 'http://localhost:5000'
+const URL = process.env.NODE_ENV === 'production' ? "" : 'http://localhost:5000'
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -16,7 +16,7 @@ const Card = ({ question, answer, id, removeCard }) => {
   useEffect(() => {
     setAnswerState(answer);
     setQuestionState(question);
-  }, [])
+  }, [answer, question])
 
   const cardClick = () => {
     setShowAnswer(!showAnswer);
@@ -36,7 +36,7 @@ const Card = ({ question, answer, id, removeCard }) => {
         <Formik
           initialValues={{ question: "hello", answer: answerState }}
           onSubmit={async (values, actions) => {
-            const res = await axios.put(`${URL}/update`, {question: values.question, answer: values.answer, id});
+            await axios.put(`${URL}/update`, {question: values.question, answer: values.answer, id});
             setEditing(false);
             setAnswerState(values.answer);
             setQuestionState(values.question);
@@ -47,12 +47,16 @@ const Card = ({ question, answer, id, removeCard }) => {
               <Form>
                 <FormControl>
                   <FormLabel color='white' htmlFor="question">Question</FormLabel>
-                  <Input
-                    name="question"
-                    background='white'
-                    onChange={handleChange}
-                    placeholder="Question"
-                  />
+                  <Field name='question'>
+                    {({field, form}) => {
+                      return <Input
+                        id='question'
+                        background='white'
+                        onChange={handleChange}
+                        placeholder="Question"
+                      />
+                    }}
+                  </Field>
                   <FormErrorMessage>Error :(</FormErrorMessage>
                 </FormControl>
                 <FormControl py="10px">
