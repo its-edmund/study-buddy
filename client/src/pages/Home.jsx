@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, SimpleGrid, Heading } from "@chakra-ui/react";
+import { Button, SimpleGrid, Heading, Spinner, Box } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -13,11 +13,13 @@ const URL =
 
 const Home = () => {
   const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const getData = async () => {
       let res = await axios.get(`${URL}/allcards`);
       setCards(res.data);
+      setLoading(false);
     };
     getData();
   }, []);
@@ -59,30 +61,53 @@ const Home = () => {
           <AddIcon />
         </Button>
       </Link>
-      {cards.length <= 0 ? (
-        <Heading
-          textAlign="center"
-          my="70px"
-          fontSize="3xl"
-          fontWeight="extrabold"
-        >
-          You haven't added any cards yet!
-        </Heading>
-      ) : (
-        <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
-          {cards.map((e) => {
-            return (
-              <Card
-                key={e._id}
-                id={e._id}
-                question={e.question}
-                answer={e.answer}
-                removeCard={removeCard}
-              />
-            );
-          })}
-        </SimpleGrid>
-      )}
+      <>
+        {loading ? (
+          <Box
+            width="100vw"
+            height="100vh"
+            position="absolute"
+            top="0"
+            left="0"
+          >
+            <Spinner
+              size="xl"
+              color="pink.300"
+              position="absolute"
+              top="50%"
+              left="50%"
+              transform="translate(-50%, -50%)"
+            />
+          </Box>
+        ) : (
+          <>
+            {cards.length <= 0 ? (
+              <Heading
+                textAlign="center"
+                my="70px"
+                fontSize="3xl"
+                fontWeight="extrabold"
+              >
+                You haven't added any cards yet!
+              </Heading>
+            ) : (
+              <SimpleGrid columns={{ base: 1, md: 3 }} spacing={10}>
+                {cards.map((e) => {
+                  return (
+                    <Card
+                      key={e._id}
+                      id={e._id}
+                      question={e.question}
+                      answer={e.answer}
+                      removeCard={removeCard}
+                    />
+                  );
+                })}
+              </SimpleGrid>
+            )}
+          </>
+        )}
+      </>
     </>
   );
 };
