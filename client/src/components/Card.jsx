@@ -49,11 +49,20 @@ const Card = ({ question, answer, id, removeCard }) => {
         initialValues={{ question: questionState, answer: answerState }}
         enableReinitialize
         onSubmit={async (values, actions) => {
-          await axios.put(`${URL}/update`, {
+          /*await axios.put(`${URL}/update`, {
             question: values.question,
             answer: values.answer,
             id: id,
-          });
+          });*/
+          let data = JSON.parse(localStorage.getItem("cards"));
+          for (let i in data) {
+            if (data[i]._id === id) {
+              data[i].question = values.question;
+              data[i].answer = values.answer;
+              break;
+            }
+          }
+          localStorage.setItem("cards", JSON.stringify(data));
           setEditing(false);
           setAnswerState(values.answer);
           setQuestionState(values.question);

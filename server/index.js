@@ -28,7 +28,7 @@ app.use(
 app.use(express.json());
 
 mongoose.connect(
-  `mongodb+srv://admin:${process.env.MONGODB_PASSWORD}@cards.ahocn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
+  `mongodb+srv://admin:${process.env.MONGODB_PASSWORD_DEV}@cards-auth.vhx8s.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true }
 );
 

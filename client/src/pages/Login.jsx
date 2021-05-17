@@ -43,20 +43,11 @@ const New = () => {
       <Formik
         initialValues={{ question: "", answer: "" }}
         onSubmit={async (values, actions) => {
-          /*const res = await axios.post(`${URL}/add`, {
+          const res = await axios.post(`${URL}/add`, {
             question: values.question,
             answer: values.answer,
-          });*/
-          let data = JSON.parse(localStorage.getItem("cards"));
-          if (data == null) {
-            data = [];
-          }
-          data.push({
-            question: values.question,
-            answer: values.answer,
-            _id: Date.now(),
           });
-          localStorage.setItem("cards", JSON.stringify(data));
+          console.log(res);
           actions.setSubmitting(false);
           history.push("/");
           toast({
