@@ -5,7 +5,7 @@ Study Buddy is a simple flashcard system that allows you to add question and ans
 ## Project Status
 
 The project is still being developed. Here are future implementations I would like to add:
-- [ ] Use local storage rather than a database so people can keep their own copies
+- [x] Use local storage rather than a database so people can keep their own copies
 - [ ] Authentication to save personal list
 - [ ] Dark mode
 - [ ] Different format for questions and answers
@@ -16,9 +16,7 @@ This project uses the standard MERN stack along with these libraries:
 - [React-Card-Flip](https://www.npmjs.com/package/react-card-flip)
 
 ## Usage
-Visit <https://quizlet-clone.netlify.app> to use the application.
-
-***Disclaimer: Currently, all clients use data from the same database so everyone can see all entries.***
+Visit <https://quizlet-clone.netlify.app> to use the application. The application uses local storage to store your data.
 
 ## Development
 Clone this repository. This project uses `yarn` so it must be installed before you can run this project.
