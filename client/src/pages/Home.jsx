@@ -9,15 +9,9 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useAuth0 } from "@auth0/auth0-react";
 
 import Card from "../components/Card";
-
-const URL =
-  process.env.NODE_ENV === "production"
-    ? "https://quizlet-clone-backend.herokuapp.com"
-    : "http://localhost:5000";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
@@ -25,10 +19,6 @@ const Home = () => {
   const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   useEffect(() => {
-    const getData = async () => {
-      let res = await axios.get(`${URL}/allcards`);
-    };
-    /*getData();*/
     let data = JSON.parse(localStorage.getItem("cards"));
     setCards(data ? data : []);
     setLoading(false);

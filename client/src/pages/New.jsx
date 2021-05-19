@@ -11,13 +11,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
-import axios from "axios";
 import { Formik, Form } from "formik";
-
-const URL =
-  process.env.NODE_ENV === "production"
-    ? "https://quizlet-clone-backend.herokuapp.com"
-    : "http://localhost:5000";
 
 const New = () => {
   const history = useHistory();
