@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  Button,
-  SimpleGrid,
-  Heading,
-  Spinner,
-  Box,
-  Text,
-} from "@chakra-ui/react";
+import { Button, SimpleGrid, Heading, Spinner, Box } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import { useAuth0 } from "@auth0/auth0-react";
 
 import Card from "../components/Card";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
+  /*const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();*/
 
   useEffect(() => {
     let data = JSON.parse(localStorage.getItem("cards"));
@@ -45,7 +37,7 @@ const Home = () => {
       >
         Study Buddy ✎
       </Heading>
-      <>
+      {/*<>
         {isAuthenticated ? (
           <>
             <Text
@@ -89,7 +81,7 @@ const Home = () => {
             Log In
           </Button>
         )}
-      </>
+      </>*/}
       <Link to="/new">
         <Button
           height="60px"
