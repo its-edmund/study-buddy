@@ -1,35 +1,35 @@
 import React, { useState, useEffect } from "react";
-import { Button, SimpleGrid, Heading, Spinner, Box } from "@chakra-ui/react";
+import {
+  Button,
+  SimpleGrid,
+  Heading,
+  Spinner,
+  Box,
+  Text,
+} from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
-import axios from "axios";
+import { useAuth0 } from "@auth0/auth0-react";
 
 import Card from "../components/Card";
-
-const URL =
-  process.env.NODE_ENV === "production"
-    ? "https://quizlet-clone-backend.herokuapp.com"
-    : "http://localhost:5000";
 
 const Home = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
+  const { isAuthenticated, loginWithRedirect, logout, user } = useAuth0();
 
   useEffect(() => {
-    const getData = async () => {
-      let res = await axios.get(`${URL}/allcards`);
-      setCards(res.data);
-      setLoading(false);
-    };
-    getData();
+    let data = JSON.parse(localStorage.getItem("cards"));
+    setCards(data ? data : []);
+    setLoading(false);
   }, []);
 
   const removeCard = async (_id) => {
     const newCards = cards.filter((card) => {
       return card._id !== _id;
     });
-    await axios.delete(`${URL}/delete`, { data: { id: _id } });
-    console.log(newCards);
+    /*await axios.delete(`${URL}/delete`, { data: { id: _id } });*/
+    localStorage.setItem("cards", JSON.stringify(newCards));
     setCards(newCards);
   };
 
@@ -45,6 +45,51 @@ const Home = () => {
       >
         Study Buddy ✎
       </Heading>
+      <>
+        {isAuthenticated ? (
+          <>
+            <Text
+              position="absolute"
+              top="21px"
+              right="140px"
+              fontSize="20px"
+              bgGradient="linear(to-l, #7928CA,#FF0080)"
+              bgClip="text"
+            >
+              User: {user.name}
+            </Text>
+            <Button
+              position="absolute"
+              variant="ghost"
+              top="15px"
+              fontSize="20px"
+              bgGradient="linear(to-l, #7928CA,#FF0080)"
+              bgClip="text"
+              right="30px"
+              _hover="none"
+              _active="none"
+              onClick={() => logout({ returnTo: window.location.origin })}
+            >
+              Log Out
+            </Button>
+          </>
+        ) : (
+          <Button
+            position="absolute"
+            variant="ghost"
+            top="15px"
+            fontSize="20px"
+            bgGradient="linear(to-l, #7928CA,#FF0080)"
+            bgClip="text"
+            right="30px"
+            _hover="none"
+            _active="none"
+            onClick={() => loginWithRedirect()}
+          >
+            Log In
+          </Button>
+        )}
+      </>
       <Link to="/new">
         <Button
           height="60px"

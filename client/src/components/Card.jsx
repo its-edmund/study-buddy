@@ -13,12 +13,6 @@ import {
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
 import { Formik, Form } from "formik";
-import axios from "axios";
-
-const URL =
-  process.env.NODE_ENV === "production"
-    ? "https://quizlet-clone-backend.herokuapp.com"
-    : "http://localhost:5000";
 
 const Card = ({ question, answer, id, removeCard }) => {
   const [showAnswer, setShowAnswer] = useState(false);
@@ -49,11 +43,20 @@ const Card = ({ question, answer, id, removeCard }) => {
         initialValues={{ question: questionState, answer: answerState }}
         enableReinitialize
         onSubmit={async (values, actions) => {
-          await axios.put(`${URL}/update`, {
+          /*await axios.put(`${URL}/update`, {
             question: values.question,
             answer: values.answer,
             id: id,
-          });
+          });*/
+          let data = JSON.parse(localStorage.getItem("cards"));
+          for (let i in data) {
+            if (data[i]._id === id) {
+              data[i].question = values.question;
+              data[i].answer = values.answer;
+              break;
+            }
+          }
+          localStorage.setItem("cards", JSON.stringify(data));
           setEditing(false);
           setAnswerState(values.answer);
           setQuestionState(values.question);
