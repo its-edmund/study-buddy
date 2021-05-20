@@ -63,7 +63,7 @@ const New = () => {
       >
         {({ handleChange }) => (
           <Box
-            width="30vw"
+            width={{ base: "80vw", md: "30vw" }}
             position="absolute"
             left="50%"
             top="50%"
