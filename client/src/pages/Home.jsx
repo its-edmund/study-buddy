@@ -32,7 +32,7 @@ const Home = () => {
         my="20px"
         bgGradient="linear(to-l, #7928CA,#FF0080)"
         bgClip="text"
-        fontSize="6xl"
+        fontSize={{ base: "5xl", md: "6xl" }}
         fontWeight="extrabold"
       >
         Study Buddy ✎
