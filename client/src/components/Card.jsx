@@ -9,6 +9,7 @@ import {
   FormLabel,
   Input,
   FormErrorMessage,
+  Flex,
 } from "@chakra-ui/react";
 import { CloseIcon, EditIcon } from "@chakra-ui/icons";
 import ReactCardFlip from "react-card-flip";
@@ -122,7 +123,7 @@ const Card = ({ question, answer, id, removeCard }) => {
     </Box>
   ) : (
     <ReactCardFlip isFlipped={showAnswer}>
-      <Box
+      <Flex
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
         borderRadius="10px"
@@ -131,6 +132,8 @@ const Card = ({ question, answer, id, removeCard }) => {
         my="10px"
         bgGradient="linear(to-l, #9831ff,#fa31b7)"
         onClick={cardClick}
+        flexDir='column'
+        justifyContent='center'
       >
         <IconButton
           icon={<CloseIcon />}
@@ -158,14 +161,12 @@ const Card = ({ question, answer, id, removeCard }) => {
           right="30px"
           _hover="none"
         />
-        <Box position="relative" top="50%" transform="translateY(-50%)">
           <Heading color="white" fontSize="24px" fontWeight="bold">
             Question
           </Heading>
           <Text color="white">{questionState}</Text>
-        </Box>
-      </Box>
-      <Box
+      </Flex>
+      <Flex
         bgGradient="linear(to-l, #9831ff,#fa31b7)"
         width={{ base: "80vw", md: "30vw" }}
         height="300px"
@@ -174,14 +175,14 @@ const Card = ({ question, answer, id, removeCard }) => {
         mx="auto"
         my="10px"
         onClick={cardClick}
+        flexDir='column'
+        justifyContent='center'
       >
-        <Box position="relative" top="50%" transform="translateY(-50%)">
           <Heading fontSize="24px" color="white" fontWeight="bold">
             Answer
           </Heading>
           <Text color="white">{answerState}</Text>
-        </Box>
-      </Box>
+      </Flex>
     </ReactCardFlip>
   );
 };
